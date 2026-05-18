@@ -6,6 +6,7 @@
 void menu();
 int buscar(char especies[][50], int total, char esp[]);
 void registrar(char especies[][50], float pesos[], int cuidadores[], int dias[], int *total);
+void mostrar(char especies[][50], float pesos[], int cuidadores[], int dias[], int total);
 
 int main(){
     char especies[MAX][50];
@@ -84,4 +85,18 @@ void registrar(char especies[][50], float pesos[], int cuidadores[], int dias[],
     (*total)++;
 
     printf("animal registrado\n");
+}
+
+void mostrar(char especies[][50], float pesos[], int cuidadores[], int dias[], int total){
+    int i;
+
+    if(total == 0){
+        printf("el refugio esta vacio\n");
+        return;
+    }
+
+    for(i = 0; i < total; i++){
+        printf("%d) %s | peso: %.2f kg | cuidadores: %d | dias recuperacion: %d\n",
+               i+1, especies[i], pesos[i], cuidadores[i], dias[i]);
+    }
 }
