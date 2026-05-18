@@ -5,6 +5,7 @@
 
 void menu();
 int buscar(char especies[][50], int total, char esp[]);
+void registrar(char especies[][50], float pesos[], int cuidadores[], int dias[], int *total);
 
 int main(){
     char especies[MAX][50];
@@ -25,6 +26,8 @@ int main(){
     do {
         menu();
         scanf("%d", &op);
+        if (op == 1)
+            registrar(especies, pesos, cuidadores, dias, &total);
     } while(op != 6);
 
     return 0;
@@ -47,4 +50,38 @@ int buscar(char especies[][50], int total, char esp[]){
             return i;
     }
     return -1;
+}
+
+void registrar(char especies[][50], float pesos[], int cuidadores[], int dias[], int *total){
+    char esp[50];
+    float p;
+    int c, d;
+
+    if(*total >= MAX){
+        printf("el refugio esta lleno\n");
+        return;
+    }
+
+    printf("especie del animal: ");
+    scanf(" %s", esp);
+
+    if(buscar(especies, *total, esp) >= 0){
+        printf("esa especie ya esta registrada\n");
+        return;
+    }
+
+    printf("peso promedio del animal (kg): ");
+    scanf("%f", &p);
+    printf("cuidadores necesarios por animal: ");
+    scanf("%d", &c);
+    printf("dias estimados de recuperacion: ");
+    scanf("%d", &d);
+
+    strcpy(especies[*total], esp);
+    pesos[*total] = p;
+    cuidadores[*total] = c;
+    dias[*total] = d;
+    (*total)++;
+
+    printf("animal registrado\n");
 }
