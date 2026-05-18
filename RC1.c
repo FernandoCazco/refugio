@@ -8,6 +8,7 @@ int buscar(char especies[][50], int total, char esp[]);
 void registrar(char especies[][50], float pesos[], int cuidadores[], int dias[], int *total);
 void mostrar(char especies[][50], float pesos[], int cuidadores[], int dias[], int total);
 void editar(char especies[][50], float pesos[], int cuidadores[], int dias[], int total);
+void dar_alta(char especies[][50], float pesos[], int cuidadores[], int dias[], int *total);
 
 int main(){
     char especies[MAX][50];
@@ -142,4 +143,33 @@ void editar(char especies[][50], float pesos[], int cuidadores[], int dias[], in
     }
 
     printf("actualizado\n");
+}
+
+void dar_alta(char especies[][50], float pesos[], int cuidadores[], int dias[], int *total){
+    char esp[50];
+    int pos, j;
+
+    if(*total == 0){
+        printf("no hay animales en el refugio\n");
+        return;
+    }
+
+    printf("especie a liberar: ");
+    scanf(" %s", esp);
+
+    pos = buscar(especies, *total, esp);
+    if(pos == -1){
+        printf("no se encontro\n");
+        return;
+    }
+
+    for(j = pos; j < *total - 1; j++){
+        strcpy(especies[j], especies[j+1]);
+        pesos[j] = pesos[j+1];
+        cuidadores[j] = cuidadores[j+1];
+        dias[j] = dias[j+1];
+    }
+
+    (*total)--;
+    printf("animal dado de alta y liberado\n");
 }
