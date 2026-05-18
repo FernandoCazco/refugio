@@ -9,6 +9,7 @@ void registrar(char especies[][50], float pesos[], int cuidadores[], int dias[],
 void mostrar(char especies[][50], float pesos[], int cuidadores[], int dias[], int total);
 void editar(char especies[][50], float pesos[], int cuidadores[], int dias[], int total);
 void dar_alta(char especies[][50], float pesos[], int cuidadores[], int dias[], int *total);
+void evaluar(float pesos[], int cuidadores[], int dias[], int total, float alimentoDisp, int personalDisp);
 
 int main(){
     char especies[MAX][50];
@@ -32,10 +33,16 @@ int main(){
         if (op == 1)
             registrar(especies, pesos, cuidadores, dias, &total);
             else if(op == 2)
-            editar(especies, pesos, cuidadores, dias, total);
-        else if(op == 4)
-            mostrar(especies, pesos, cuidadores, dias, total);
-    } while(op != 6);
+                editar(especies, pesos, cuidadores, dias, total);
+             else if(op == 4)
+                mostrar(especies, pesos, cuidadores, dias, total);
+             else if(op == 5)
+                evaluar(pesos, cuidadores, dias, total, alimento, personal);
+            else if(op == 6)
+                printf("cerrando sistema...\n");
+             else
+                printf("opcion no valida\n");
+        } while(op != 6);
 
     return 0;
 }
@@ -172,4 +179,33 @@ void dar_alta(char especies[][50], float pesos[], int cuidadores[], int dias[], 
 
     (*total)--;
     printf("animal dado de alta y liberado\n");
+}
+
+void evaluar(float pesos[], int cuidadores[], int dias[], int total, float alimentoDisp, int personalDisp){
+    int i;
+    float alimentoTotal = 0;
+    int personalTotal = 0;
+
+    if(total == 0){
+        printf("no hay animales en el refugio\n");
+        return;
+    }
+
+    for(i = 0; i < total; i++){
+        alimentoTotal = alimentoTotal + (pesos[i] * 0.03f * dias[i]);
+        personalTotal = personalTotal + cuidadores[i];
+    }
+
+    printf("alimento requerido: %.2f kg / disponible: %.2f kg\n", alimentoTotal, alimentoDisp);
+    printf("personal requerido: %d / disponible: %d\n", personalTotal, personalDisp);
+
+    if(alimentoTotal <= alimentoDisp && personalTotal <= personalDisp){
+        printf("el refugio puede atender a todos los animales\n");
+    } else {
+        printf("capacidad insuficiente\n");
+        if(alimentoTotal > alimentoDisp)
+            printf("faltan %.2f kg de alimento\n", alimentoTotal - alimentoDisp);
+        if(personalTotal > personalDisp)
+            printf("faltan %d cuidadores\n", personalTotal - personalDisp);
+    }
 }
